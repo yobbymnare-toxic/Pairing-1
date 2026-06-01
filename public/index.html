@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XTECH_KE - WhatsApp Pairing</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-container">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="gradient-orb orb-4"></div>
+    <div class="particles" id="particles"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M20 2L36 10V26L20 38L4 26V10L20 2Z" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
+            <path d="M20 8L29 13V23L20 30L11 23V13L20 8Z" fill="url(#logoGrad)" opacity="0.3"/>
+            <text x="20" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Orbitron">X</text>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#00f0ff"/>
+                <stop offset="50%" stop-color="#8b5cf6"/>
+                <stop offset="100%" stop-color="#ff006e"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>XTECH<span class="accent">_KE</span></h1>
+          <p class="subtitle">WhatsApp Session Pairing</p>
+        </div>
+      </div>
+      <div class="status-badge" id="serverStatus">
+        <span class="status-dot"></span>
+        <span>Connecting...</span>
+      </div>
+    </header>
+
+    <!-- Main Card -->
+    <main class="card">
+      <!-- Step Indicator -->
+      <div class="steps">
+        <div class="step active" data-step="1">
+          <div class="step-circle">1</div>
+          <span>Enter Phone</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="2">
+          <div class="step-circle">2</div>
+          <span>Pair Code</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="3">
+          <div class="step-circle">3</div>
+          <span>Get Session</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Enter Phone Number -->
+      <div class="step-content active" id="step1">
+        <h2 class="section-title">Pair Your WhatsApp</h2>
+        <p class="section-desc">Enter your WhatsApp phone number with country code</p>
+
+        <div class="phone-input-group">
+          <div class="country-select">
+            <span class="flag">🇰🇪</span>
+            <span class="code">+254</span>
+          </div>
+          <input type="tel" id="phoneNumber" placeholder="712345678"
+                 maxlength="15" autocomplete="tel"
+                 oninput="formatPhone(this)"
+                 onkeydown="if(event.key==='Enter')startPairing()">
+        </div>
+
+        <button class="btn-primary" id="btnPair" onclick="startPairing()">
+          <span>Get Pairing Code</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="info-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>Open WhatsApp → Linked Devices → Link with phone number</span>
+        </div>
+      </div>
+
+      <!-- Step 2: Pairing Code -->
+      <div class="step-content" id="step2">
+        <h2 class="section-title">Enter Pairing Code</h2>
+        <p class="section-desc">Enter this code in your WhatsApp app</p>
+
+        <div class="pairing-code-container" id="pairingCodeContainer" style="display:none;">
+          <p class="code-label">Your Pairing Code</p>
+          <div class="pairing-code" id="pairingCode"></div>
+          <p class="code-hint">Open WhatsApp → Linked Devices → Link with phone number → Enter this code</p>
+        </div>
+
+        <div class="loading-box" id="loadingBox">
+          <div class="spinner"></div>
+          <p>Requesting pairing code...</p>
+        </div>
+
+        <div class="status-message" id="pairStatus"></div>
+
+        <button class="btn-secondary" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+      </div>
+
+      <!-- Step 3: Session ID -->
+      <div class="step-content" id="step3">
+        <div class="success-animation">
+          <div class="success-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="36" height="36">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="section-title success-title">Successfully Paired!</h2>
+        <p class="section-desc">Your session ID has been sent to your WhatsApp. Copy it below.</p>
+
+        <div class="session-container">
+          <div class="session-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <span>Session ID</span>
+          </div>
+          <div class="session-box">
+            <textarea id="sessionId" readonly></textarea>
+          </div>
+          <div class="session-actions">
+            <button class="btn-copy" onclick="copySession()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              <span id="copyText">Copy Session ID</span>
+            </button>
+            <button class="btn-new" onclick="newSession()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+              <span>New</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="info-box success-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          <span>Session ID also sent to your WhatsApp. Check your messages!</span>
+        </div>
+      </div>
+
+      <!-- Toast -->
+      <div class="toast" id="toast">
+        <span id="toastMsg"></span>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Powered by <span class="accent">XTECH_KE</span> &bull; Built with Baileys</p>
+    </footer>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
