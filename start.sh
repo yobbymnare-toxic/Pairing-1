@@ -30,7 +30,7 @@ sleep 3
 
 # ---- Install NPM Dependencies ----
 echo "[XTECH_KE] Installing dependencies..."
-npm install --production 2>&1 | tail -3
+npm install --production --legacy-peer-deps 2>&1 | tail -5
 echo "[XTECH_KE] Dependencies installed!"
 
 # ---- Create sessions dir ----
