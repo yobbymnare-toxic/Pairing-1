@@ -23,20 +23,7 @@
     <!-- Header -->
     <header class="header">
       <div class="logo-container">
-        <div class="logo-icon">
-          <svg viewBox="0 0 40 40" fill="none">
-            <path d="M20 2L36 10V26L20 38L4 26V10L20 2Z" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
-            <path d="M20 8L29 13V23L20 30L11 23V13L20 8Z" fill="url(#logoGrad)" opacity="0.3"/>
-            <text x="20" y="24" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Orbitron">X</text>
-            <defs>
-              <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40">
-                <stop offset="0%" stop-color="#00f0ff"/>
-                <stop offset="50%" stop-color="#8b5cf6"/>
-                <stop offset="100%" stop-color="#ff006e"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
+        <img src="xtech-xd.png" alt="XTECH XD" class="brand-image">
         <div class="logo-text">
           <h1>XTECH<span class="accent">_KE</span></h1>
           <p class="subtitle">WhatsApp Session Pairing</p>
@@ -47,6 +34,14 @@
         <span>Connecting...</span>
       </div>
     </header>
+
+    <!-- Brand Banner -->
+    <div class="brand-banner">
+      <img src="xtech-xd.png" alt="XTECH XD" class="banner-image">
+      <div class="banner-overlay">
+        <span class="banner-text">XTECH XD</span>
+      </div>
+    </div>
 
     <!-- Main Card -->
     <main class="card">
@@ -108,7 +103,7 @@
 
         <div class="loading-box" id="loadingBox">
           <div class="spinner"></div>
-          <p>Requesting pairing code...</p>
+          <p id="loadingText">Requesting pairing code...</p>
         </div>
 
         <div class="status-message" id="pairStatus"></div>

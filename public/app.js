@@ -71,6 +71,10 @@ function startPairing() {
 
   var fullPhone = '254' + phone.replace(/^0+/, '');
   showStep(2);
+  document.getElementById('loadingBox').style.display = 'flex';
+  document.getElementById('pairingCodeContainer').style.display = 'none';
+  document.getElementById('loadingText').textContent = 'Requesting pairing code...';
+  document.getElementById('pairStatus').textContent = '';
   socket.emit('start-pair', fullPhone);
 }
 
@@ -83,6 +87,7 @@ function goBack() {
   showStep(1);
   document.getElementById('pairingCodeContainer').style.display = 'none';
   document.getElementById('loadingBox').style.display = 'flex';
+  document.getElementById('loadingText').textContent = 'Requesting pairing code...';
   document.getElementById('pairStatus').textContent = '';
   var btn = document.getElementById('btnPair');
   btn.disabled = false;
@@ -121,6 +126,7 @@ function newSession() {
   document.getElementById('phoneNumber').value = '';
   document.getElementById('pairingCodeContainer').style.display = 'none';
   document.getElementById('loadingBox').style.display = 'flex';
+  document.getElementById('loadingText').textContent = 'Requesting pairing code...';
   document.getElementById('pairStatus').textContent = '';
   var btn = document.getElementById('btnPair');
   btn.disabled = false;
@@ -148,6 +154,7 @@ socket.on('disconnect', function() {
 });
 
 socket.on('pairing-code', function(code) {
+  console.log('Pairing code received:', code);
   var container = document.getElementById('pairingCodeContainer');
   var codeDisplay = document.getElementById('pairingCode');
   var loadingBox = document.getElementById('loadingBox');
@@ -174,12 +181,18 @@ socket.on('connected', function(sessionId) {
 });
 
 socket.on('status', function(msg) {
+  console.log('Status update:', msg);
+  var loadingText = document.getElementById('loadingText');
+  if (loadingText) loadingText.textContent = msg;
   document.getElementById('pairStatus').textContent = msg;
 });
 
 socket.on('error', function(msg) {
+  console.log('Error:', msg);
   document.getElementById('pairStatus').textContent = msg;
   document.getElementById('pairStatus').className = 'status-message error';
+  var loadingText = document.getElementById('loadingText');
+  if (loadingText) loadingText.textContent = msg;
   showToast(msg);
 });
 
